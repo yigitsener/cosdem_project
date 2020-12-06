@@ -10,7 +10,7 @@ class Cosdem:
 
     def __init__(self, file_path_or_DataFrame):
 
-        def __readData(x):
+        def __read_data(x):
 
             if isinstance(x, pd.DataFrame):
                 df = x
@@ -41,10 +41,18 @@ class Cosdem:
 
             return df
 
-        if isinstance(__readData(file_path_or_DataFrame), pd.DataFrame):
-            self.__df = __readData(file_path_or_DataFrame)
+        if isinstance(__read_data(file_path_or_DataFrame), pd.DataFrame):
+            self.__df = __read_data(file_path_or_DataFrame)
         else:
-            raise AttributeError(__readData(file_path_or_DataFrame))
+            raise AttributeError(__read_data(file_path_or_DataFrame))
+
+        self.__df_list = [self._descriptive()
+                          ,self._homogeneity_tests()
+                          ,self._normalityTest()
+                          ,self._differenceTests()
+                          ,self._correlationTests()
+                          ,self._regressionResult()]
+
 
     def head(self):
         return self.__df.head()
@@ -62,7 +70,7 @@ class Cosdem:
                 , x.var(), x.skew(), x.kurtosis()]
         return round(descriptive, 3)
 
-    def _homogeneityTests(self):
+    def _homogeneity_tests(self):
         df = self.__df
         homogeneityTests = pd.DataFrame({"Test Statistic": [stats.levene(df.iloc[:, 0], df.iloc[:, 1])[0]
             , stats.bartlett(df.iloc[:, 0], df.iloc[:, 1])[0]]
@@ -114,6 +122,7 @@ class Cosdem:
         return round(correlationTests, 3)
 
     def _regressionResult(self):
+
         df = self.__df
         x, y = df.iloc[:, 0].values, df.iloc[:, 1].values
         slope, intercept, r2, p_value, std_err = stats.linregress(x, y)
@@ -242,28 +251,46 @@ class Cosdem:
             return vi_plt
 
 
-    def saveAllFigures(self):
+    def save_all_figures(self):
 
         if "outputs" not in os.listdir():
             os.mkdir("outputs")
 
-        print("Saving all figures...")
+        r = self.regressionPlot(plotshow = False)
+        r.savefig("outputs/regression.png")
+        r.close()
 
-        self.regressionPlot(plotshow = False).savefig("outputs/regression.png")
-        self.bland_altman_plot(plotshow = False).savefig("outputs/bland_altman.png")
-        self.violinPlot(plotshow = False).savefig("outputs/violin.png")
+        b = self.bland_altman_plot(plotshow = False)
+        b.savefig("outputs/bland_altman.png")
+        b.close()
+
+        v = self.violinPlot(plotshow = False)
+        v.savefig("outputs/violin.png")
+        v.close()
 
 
         print("Successfully all figures saved in the outputs folder.")
 
+    def save_all_tables(self):
+
+        if "outputs" not in os.listdir():
+            os.mkdir("outputs")
+
+        writer = pd.ExcelWriter("outputs/tables.xlsx", engine='xlsxwriter')
+        row = 1
+
+        for dataframe in self.__df_list:
+            dataframe.to_excel(writer, sheet_name="results", startrow=row, startcol=0)
+            row = row + len(dataframe.index) + 3
+
+        writer.save()
+
+        print("Successfully all tables saved in the outputs folder.")
+
 
     def report(self):
-        d = self._descriptive()
-        n = self._normalityTest()
-        t = self._differenceTests()
-        h = self._homogeneityTests()
-        c = self._correlationTests()
-        r = self._regressionResult()
+
+        l = self.__df_list
 
         h1 = "-- Descriptive Statistics --"
         h2 = "-- Homogeneity Tests of Variances --"
@@ -271,14 +298,21 @@ class Cosdem:
         h4 = "-- Statistical Difference Tests --"
         h5 = "-- Correlation Tests --"
         h6 = "-- Regression Result --"
-        return f"{h1}\n{d}\n\n{h2}\n{h}\n\n{h3}\n{n}\n\n{h4}\n{t}\n\n{h5}\n{c}\n\n{h6}\n{r}"
+
+        return f"{h1}\n{l[0]}\n\n{h2}\n{l[1]}\n\n{h3}\n{l[2]}\n\n{h4}\n{l[3]}\n\n{h5}\n{l[4]}\n\n{h6}\n{l[5]}"
 
 
 file_name = "example/sample_data.csv"
 # df = pd.read_csv(file_name)
 a = Cosdem(file_name)
-a.report()
+print(a.report())
 
+
+# df1 = a._descriptive()
+# df2 = a._correlationTests()
+# df3 = a._regressionResult()
+#
+# df_tables = [df1, df2, df3]
 
 
 #

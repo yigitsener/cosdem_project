@@ -2,6 +2,7 @@
 venv/
 .idea/
 cosdem/__pycache__/
+outputs
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

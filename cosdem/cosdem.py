@@ -262,18 +262,22 @@ class Cosdem:
         n = self._normalityTest()
         t = self._differenceTests()
         h = self._homogeneityTests()
+        c = self._correlationTests()
+        r = self._regressionResult()
 
         h1 = "-- Descriptive Statistics --"
         h2 = "-- Homogeneity Tests of Variances --"
         h3 = "-- Normality Test: Shapiro Wilk --"
         h4 = "-- Statistical Difference Tests --"
-        return f"{h1}\n{d}\n\n{h2}\n{h}\n\n{h3}\n{n}\n\n{h4}\n{t}"
+        h5 = "-- Correlation Tests --"
+        h6 = "-- Regression Result --"
+        return f"{h1}\n{d}\n\n{h2}\n{h}\n\n{h3}\n{n}\n\n{h4}\n{t}\n\n{h5}\n{c}\n\n{h6}\n{r}"
 
 
-
-# df = pd.read_excel(file_name)
-# a = Cosdem(file_name)
-# a.violinPlot()
+file_name = ""
+df = pd.read_excel(file_name)
+a = Cosdem(file_name)
+a.violinPlot()
 
 
 

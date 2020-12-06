@@ -274,10 +274,10 @@ class Cosdem:
         return f"{h1}\n{d}\n\n{h2}\n{h}\n\n{h3}\n{n}\n\n{h4}\n{t}\n\n{h5}\n{c}\n\n{h6}\n{r}"
 
 
-file_name = ""
-df = pd.read_excel(file_name)
+file_name = "example/sample_data.csv"
+# df = pd.read_csv(file_name)
 a = Cosdem(file_name)
-a.violinPlot()
+a.report()
 
 
 

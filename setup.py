@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 setup(name='cosdem',
       version='0.0.1',
@@ -9,8 +9,7 @@ setup(name='cosdem',
       author_email='dataevreni@gmail.com',
       license='MIT',
       packages=['cosdem'],
-      install_requires=[
-          'numpy',
-      ],
+      install_requires=find_packages(),
+      # test_suite="tests",
       include_package_data=True,
       zip_safe=False)

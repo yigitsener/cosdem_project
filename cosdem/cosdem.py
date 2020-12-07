@@ -302,12 +302,6 @@ class Cosdem:
         return f"{h1}\n{l[0]}\n\n{h2}\n{l[1]}\n\n{h3}\n{l[2]}\n\n{h4}\n{l[3]}\n\n{h5}\n{l[4]}\n\n{h6}\n{l[5]}"
 
 
-file_name = "example/sample_data.csv"
-# df = pd.read_csv(file_name)
-a = Cosdem(file_name)
-print(a.report())
-
-
 # df1 = a._descriptive()
 # df2 = a._correlationTests()
 # df3 = a._regressionResult()

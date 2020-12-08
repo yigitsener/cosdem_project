@@ -10,17 +10,46 @@ class Cosdem:
 
     def __init__(self, file_path_or_DataFrame):
 
+        """
+        :param file_path_or_DataFrame: This class accepts ->
+               (.csv)  comma separated value files
+               (.xls, .xlsx) excel files
+               Pandas DataFrame
+        """
+
         def __read_data(x):
+            """
+
+            :param x: This param gets the imported file
+
+            if all Following steps are True
+            Data is prepared for analysis
+
+            :return: Pandas.Dataframe
+
+            '''
+            Data identification and verification list
+            -----------------------------------------
+           :exception:
+            1. Format should be Excel, CSV or Pandas Dataframe
+            2. The count of columns must have been two.
+            3. All columns must be interger or float
+            4. The count of rows must be greater than 30 for healthy statistic result
+            5. Data must not have missing values.
+
+            """
 
             if isinstance(x, pd.DataFrame):
                 df = x
+
             elif x[-5:] == ".xlsx":
                 df = pd.read_excel(x)
+
             elif x[-4:] in [".csv", ".txt"]:
                 df = pd.read_csv(x)
+
             else:
                 error = "Data must be Pandas DataFrame, CSV or xlsx (Excel) format"
-
                 return error
 
             if df.shape[1] != 2:
@@ -41,11 +70,15 @@ class Cosdem:
 
             return df
 
+
         if isinstance(__read_data(file_path_or_DataFrame), pd.DataFrame):
             self.__df = __read_data(file_path_or_DataFrame)
         else:
             raise AttributeError(__read_data(file_path_or_DataFrame))
 
+        """
+        List of all test functions results
+        """
         self.__df_list = [self._descriptive()
                           ,self._homogeneity_tests()
                           ,self._normalityTest()
@@ -55,7 +88,11 @@ class Cosdem:
 
 
     def head(self):
+        """
+        :return: first 5 rows in data
+        """
         return self.__df.head()
+
 
     def _descriptive(self):
         df = self.__df
@@ -68,7 +105,9 @@ class Cosdem:
             descriptive[i] = [x.count(), x.mean(), x.quantile(q=0.25)
                 , x.median(), x.quantile(q=0.75), x.std()
                 , x.var(), x.skew(), x.kurtosis()]
+
         return round(descriptive, 3)
+
 
     def _homogeneity_tests(self):
         df = self.__df
@@ -78,7 +117,9 @@ class Cosdem:
                 , stats.bartlett(df.iloc[:, 0], df.iloc[:, 1])[1]]
                                          },
                                         index=["Levene", "Bartlett"])
+
         return round(homogeneityTests, 3)
+
 
     def _normalityTest(self):
         df = self.__df
@@ -87,11 +128,12 @@ class Cosdem:
         normalityTest = pd.DataFrame([
             [x[0], x[1]]
             , [y[0], y[1]]
-        ]
+            ]
             , columns=["Test Statistic", "P-value"]
             , index=[df.columns[0], df.columns[1]])
 
         return round(normalityTest, 3)
+
 
     def _differenceTests(self):
         df = self.__df
@@ -100,11 +142,12 @@ class Cosdem:
         differenceTests = pd.DataFrame([
             [t_test[0], t_test[1]]
             , [mann_whitney[0], mann_whitney[1]]
-        ]
+            ]
             , columns=["Test Statistic", "P-value"]
             , index=["T-test", "Mann Whitney U"])
 
         return round(differenceTests, 3)
+
 
     def _correlationTests(self):
         df = self.__df
@@ -121,6 +164,7 @@ class Cosdem:
 
         return round(correlationTests, 3)
 
+
     def _regressionResult(self):
 
         df = self.__df
@@ -134,7 +178,9 @@ class Cosdem:
                                              , "P-Value": p_value
                                              , "Coefficient": slope
                                              , "Bias": intercept}, index=[0])
+
         return round(regression_result, 3)
+
 
     def bland_altman_plot(self, confidence_interval=1.96, plotshow = True):
         x, y = self.__df.iloc[:, 0].values, self.__df.iloc[:, 1].values
@@ -154,10 +200,12 @@ class Cosdem:
         ba_plt.xlabel("Mean of Variables")
         ba_plt.ylabel("Percentage Difference Variables")
         # plt.legend(fontsize=14, loc ='center right')
+
         if plotshow == True:
             ba_plt.show()
         else:
             return ba_plt
+
 
     def regressionPlot(self, plotshow = True):
         df = self.__df
@@ -170,10 +218,12 @@ class Cosdem:
         resplt.plot(x, x * slope + intercept, color="blue")
         resplt.xlabel(f"{df.columns[0]}")
         resplt.ylabel(f"{df.columns[1]}")
+
         if plotshow == True:
             resplt.show()
         else:
             return resplt
+
 
     def violinPlot(self, plotshow = True):
         df = self.__df
@@ -270,6 +320,7 @@ class Cosdem:
 
 
         print("Successfully all figures saved in the outputs folder.")
+
 
     def save_all_tables(self):
 

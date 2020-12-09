@@ -1,10 +1,10 @@
 from cosdem import Cosdem
 
-file_name = "example/sample_data.csv"
-
-analyze = Cosdem(file_name)
-
-print(analyze.report())
+# file_name = "example/sample_data.csv"
+#
+# analyze = Cosdem(file_name)
+#
+# print(analyze.report())
 """
 -- Descriptive Statistics --
                Feature_A  Feature_B

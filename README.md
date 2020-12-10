@@ -14,7 +14,7 @@ As an open-source tasking library, **cosdem**, provides one report on the follow
 - Correlation Tests
 - Regression Result
 
-###Graphs
+### Graphs
 - Violin Plot
 - Regression Line in Scatter Plot
 - Blant Altman Plot

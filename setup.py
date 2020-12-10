@@ -35,6 +35,11 @@ setup(	name='cosdem',
 					"Topic :: Scientific/Engineering :: Information Analysis",
 					"Topic :: Scientific/Engineering :: Visualization",
 				],
+		keywords=[
+			'Statistical Difference Tests', 't test', 'regression', 'correlation', 'mann wihtney u test',
+			'Homogeneity Tests', 'Normality Test', 'Descriptive Statistics', 'bland altman plot', 'violin plot'
+		  ],
+		python_requires='>=3.6.*',
 		long_description_content_type='text/markdown',
 		long_description = README,
 		documentation='http://github.com/yigitsener/cosdem_project',

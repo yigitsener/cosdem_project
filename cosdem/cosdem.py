@@ -352,7 +352,3 @@ class Cosdem:
 
         return f"{h1}\n{l[0]}\n\n{h2}\n{l[1]}\n\n{h3}\n{l[2]}\n\n{h4}\n{l[3]}\n\n{h5}\n{l[4]}\n\n{h6}\n{l[5]}"
 
-
-
-
-#

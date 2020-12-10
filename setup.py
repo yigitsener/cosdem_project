@@ -3,18 +3,13 @@ import os
 
 basepath = os.path.realpath(__file__)
 basepath = os.path.dirname(basepath)
-path = os.path.join(basepath, 'cosdem', 'VERSION')
-
-with open(path, 'r') as file:
-	VERSION = file.readline().strip()
-
 path = os.path.join(basepath, 'README.md')
 
 with open(path, 'r') as file:
 	README = file.read()
 
 setup(	name='cosdem',
-		version=VERSION,
+		version="0.0.1",
 		description='Comparing Statistical Differences of Measurements',
 		url='http://github.com/yigitsener/cosdem_project',
 		author='Yiğit Şener',
@@ -37,7 +32,7 @@ setup(	name='cosdem',
 					"Intended Audience :: Science/Research",
 					"License :: OSI Approved :: MIT License",
 					"Operating System :: OS Independent",
-					"Topic :: Scientific/Engineering :: Statistics",
+					"Topic :: Scientific/Engineering :: Information Analysis",
 					"Topic :: Scientific/Engineering :: Visualization",
 				],
 		long_description_content_type='text/markdown',
